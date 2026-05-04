@@ -1,63 +1,79 @@
-# AI Chatbot
+# AI Chatbot Widget
 
-A plug-and-play AI chatbot widget for website integration. Supports multiple backends — **Claude API**, **OpenAI API**, and **NVIDIA NIM** (Gemma, Llama, Mistral, etc.) — with a single `<script>` tag embed.
+A rule-based chatbot widget for website integration — **zero APIs, zero dependencies, zero backend**. Drop one `<script>` tag into any HTML page and it works instantly.
 
-## Planned Features
-- [ ] Floating chat widget (toggle open/close)
-- [ ] Multi-backend support: Claude · OpenAI · NVIDIA NIM
-- [ ] Custom system prompt via `data-` attribute
-- [ ] Conversation history (session-based)
-- [ ] Typing indicator animation
-- [ ] Mobile-responsive, themeable via CSS variables
-- [ ] Easy embed: one `<script>` tag, no build step
-- [ ] Rate limiting & input sanitisation
+## How It Works
 
-## Tech Stack
-- Vanilla JavaScript (zero dependencies)
-- CSS (themeable via CSS variables)
-- Claude API / OpenAI API / NVIDIA NIM API
+Keyword matching against a predefined rule set. First matching rule wins. Covers common visitor questions about services, projects, skills, pricing, and contact.
 
-## NVIDIA NIM Integration
-
-NVIDIA NIM gives free-tier access to hosted LLMs (Gemma, Llama 3, Mistral, etc.) via an OpenAI-compatible endpoint.
-
-```python
-# Example: calling NVIDIA NIM with Gemma 3
-import requests
-
-response = requests.post(
-    "https://integrate.api.nvidia.com/v1/chat/completions",
-    headers={"Authorization": f"Bearer {API_KEY}"},
-    json={
-        "model": "google/gemma-3n-e4b-it",
-        "messages": [{"role": "user", "content": "Hello!"}],
-        "max_tokens": 512,
-        "temperature": 0.20
-    }
-)
+```
+Visitor types: "what services do you offer?"
+  → keyword match: "service"
+  → reply: "Three main service areas: Security, Web Dev, AI/Automation..."
 ```
 
-> Store your API key in an environment variable or `.env` file — **never hardcode it in source code.**
+## Embed (one line)
 
-## Usage (planned)
 ```html
-<script
-  src="chatbot.js"
-  data-backend="nvidia"
-  data-model="google/gemma-3n-e4b-it"
-  data-prompt="You are a helpful assistant."
-></script>
+<script src="chatbot.js"></script>
 ```
 
-## Configuration (`.env.example`)
-```
-CLAUDE_API_KEY=your_claude_key_here
-OPENAI_API_KEY=your_openai_key_here
-NVIDIA_API_KEY=your_nvidia_nim_key_here
+That's it. The widget injects itself — floating button bottom-right, opens a styled chat window, handles everything client-side.
+
+## Topics Covered
+
+| Topic | Trigger keywords |
+|-------|-----------------|
+| Greeting | hi, hello, hey, yo |
+| Services | service, offer, help with |
+| Projects | project, portfolio, github, repo |
+| Skills | skill, tech, language, tool |
+| Security | pentest, ctf, hack, vuln |
+| Pricing/Hire | price, cost, hire, available |
+| Contact | contact, email, reach, linkedin |
+| Certifications | tryhackme, oscp, comptia, cert |
+| GhostFile | ghostfile, encrypt, aes |
+| dufo.save | dufo, privesc, bash script |
+| Farewells | bye, thanks, cheers |
+| Jokes | joke, funny |
+
+## Customising Responses
+
+Edit the `RULES` array in `chatbot.js`:
+
+```js
+const RULES = [
+  {
+    keywords: ['hello', 'hi', 'hey'],
+    reply: "Hi! How can I help you today?"
+  },
+  {
+    keywords: ['price', 'cost', 'hire'],
+    reply: "Drop me an email and we'll talk."
+  },
+  // add more rules here...
+];
 ```
 
-## Status
-> In development — initial commit coming soon.
+Rules are checked top-to-bottom — put more specific rules before general ones.
+
+## Files
+
+```
+ai-chatbot/
+├── chatbot.js   ← the widget (embed this)
+├── demo.html    ← test page (open in browser)
+└── README.md
+```
+
+## Run Locally
+
+```bash
+git clone https://github.com/B-star51/ai-chatbot.git
+cd ai-chatbot
+# Open demo.html in any browser — no server needed
+```
 
 ---
-*Part of the [B-star51 AI/Automation portfolio](https://github.com/B-star51)*
+
+*Part of the [B-star51 portfolio](https://github.com/B-star51)*
